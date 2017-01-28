@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stopwatch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+</head>
+<body>
+     <div id="app"></div>
+</body>
+
+  <script type="text/jsx">
+
+      var Stopwatch = React.createClass({
+
+   getInitialState: function () {
+      return {
+         seconds: 0,
+         counter: 0
+      };
+   },
+
+   getMin: function () {
+      return Math.floor(this.state.seconds / 60);
+   },
+
+   getSec: function () {
+      return ('0' + this.state.seconds % 60).slice(-2);
+   },
+
+   start: function () {
+      if(!this.state.counter){
+
+      var prev_ref=this;
+      this.update = setInterval(function () {
+        prev_ref.setState({
+           seconds: (prev_ref.state.seconds + 1),
+           counter: (prev_ref.state.counter + 1)
+        });
+      }, 1000);
+
+   }},
+
+   stop: function () {
+      clearInterval(this.update);
+      this.setState({
+           counter: 0
+        });
+   },
+
+   reset: function () {
+      this.setState({
+         seconds :0,
+       });
+      this.stop();
+   },
+
+   render : function() {
+      return (
+         <div>
+            <h2>STOPWATCH</h2>
+            <h2>{this.getMin()}:{this.getSec()}</h2>
+             <input type="button" value="START" onClick={this.start}/>
+            <input type="button" value="STOP" onClick={this.stop}/>
+            {(this.state.seconds !== 0)? <input type="button" value="RESET" onClick={this.reset}/> : null }
+         </div>
+
+      );
+   }
+   });
+
+
+      React.render(
+  <Stopwatch />,  document.getElementById('app')
+);
+     </script>
+
+</html>
